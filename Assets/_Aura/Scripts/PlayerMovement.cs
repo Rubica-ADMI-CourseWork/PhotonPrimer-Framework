@@ -8,6 +8,8 @@ using Photon.Pun;
 /// </summary>
 public class PlayerMovement : MonoBehaviourPun
 {
+    [SerializeField] float turnSpeed;
+    [SerializeField] float moveSpeed;
     CamController controller;
     JoystickController joystickController;
     [field:SerializeField]public Vector2 MovementInput { get;private set; }
@@ -29,9 +31,9 @@ public class PlayerMovement : MonoBehaviourPun
         float upDownInput = MovementInput.y;
 
         
-        transform.Rotate(Vector3.up * horizontalInput * 10f * Time.deltaTime);
+        transform.Rotate(Vector3.up * horizontalInput * turnSpeed * Time.deltaTime);
 
-        transform.Translate(Vector3.forward * upDownInput * 10f * Time.deltaTime);
+        transform.Translate(Vector3.forward * upDownInput * moveSpeed * Time.deltaTime);
     }
     private void SetInput(Vector2 movement)
     {

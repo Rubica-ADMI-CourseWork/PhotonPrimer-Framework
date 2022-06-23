@@ -22,6 +22,7 @@ public class PlayerHealthSystem : MonoBehaviourPun
         {
             if (!photonView.IsMine)
             {
+               photonView.RPC("SpewCrew",RpcTarget.All);
                photonView.RPC("Die",RpcTarget.All);
             } 
         }
@@ -31,12 +32,12 @@ public class PlayerHealthSystem : MonoBehaviourPun
     [PunRPC]
     private void Die()
     {
+        if(photonView.IsMine)
+        FindObjectOfType<SpawnManager>().RespawnPlayer();
         var fx = PhotonNetwork.Instantiate(destructionFX.name, transform.position, Quaternion.identity);
         Destroy(gameObject);
         Destroy(fx, .3f);
 
-
-        //PhotonNetwork.LeaveRoom();
-
+        
     }
 }

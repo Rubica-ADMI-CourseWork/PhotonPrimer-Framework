@@ -16,12 +16,29 @@ public class SpawnManager : MonoBehaviourPun
         SpawnPlayerAtRandomPos();
     }
 
-    private void SpawnPlayerAtRandomPos()
+    public void SpawnPlayerAtRandomPos()
     {
         Vector3 randomPos = new Vector3(
             Random.Range(minXBounds, maxXbounds), 
             yPos, 
             Random.Range(minZBounds, maxZBounds));
+
+        var newPlayer = PhotonNetwork.Instantiate(playerPrefab.name, randomPos, Quaternion.identity);
+    }
+
+    public void RespawnPlayer()
+    {
+        StartCoroutine(HandleRespawnWithDelay());
+    }
+
+    private IEnumerator HandleRespawnWithDelay()
+    {
+        yield return new WaitForSeconds(2f);
+
+        Vector3 randomPos = new Vector3(
+           Random.Range(minXBounds, maxXbounds),
+           yPos,
+           Random.Range(minZBounds, maxZBounds));
 
         var newPlayer = PhotonNetwork.Instantiate(playerPrefab.name, randomPos, Quaternion.identity);
     }

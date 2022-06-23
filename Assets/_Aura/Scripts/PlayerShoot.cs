@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class PlayerShoot : MonoBehaviour
+public class PlayerShoot : MonoBehaviourPun
 {
     [SerializeField] float projectileSpeed;
     [SerializeField] GameObject shellPrefab;
@@ -16,11 +17,25 @@ public class PlayerShoot : MonoBehaviour
     }
     private void Start()
     {
+        if(shootController == null){ Debug.Log("no shoot controller."); }
         shootController.OnFire += ShootShell;
     }
+
+  
     public void ShootShell()
     {
-       var shellObj = Instantiate(shellPrefab,firePosition.position,firePosition.rotation);
+        photonView.RPC("HandleShoot", RpcTarget.All);
+    }
+
+    [PunRPC]
+    private void HandleShoot()
+    {
+        Debug.Log("Inside Shoot Shell");
+        var shellObj = PhotonNetwork.Instantiate(shellPrefab.name, firePosition.position, firePosition.rotation);
         shellObj.GetComponent<Rigidbody>().velocity = firePosition.forward * projectileSpeed;
+    }
+    private void OnDestroy()
+    {
+        shootController.OnFire -= ShootShell;
     }
 }
