@@ -10,12 +10,26 @@ public class SpawnManager : MonoBehaviourPun
     [SerializeField] GameObject playerPrefab;
     
     [SerializeField]float minXBounds,maxXbounds,minZBounds,maxZBounds,yPos;
-  
+
+    public static SpawnManager Instance;
+
+    private GameObject newPlayer;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     private void Start()
     {
+        if(PhotonNetwork.IsConnected)
         SpawnPlayerAtRandomPos();
     }
 
+    public void Die()
+    {
+        Destroy(gameObject);
+    }
     public void SpawnPlayerAtRandomPos()
     {
         Vector3 randomPos = new Vector3(
@@ -23,7 +37,9 @@ public class SpawnManager : MonoBehaviourPun
             yPos, 
             Random.Range(minZBounds, maxZBounds));
 
-        var newPlayer = PhotonNetwork.Instantiate(playerPrefab.name, randomPos, Quaternion.identity);
+        newPlayer = PhotonNetwork.Instantiate(playerPrefab.name, 
+            randomPos, 
+            Quaternion.identity);
     }
 
     public void RespawnPlayer()
@@ -34,12 +50,6 @@ public class SpawnManager : MonoBehaviourPun
     private IEnumerator HandleRespawnWithDelay()
     {
         yield return new WaitForSeconds(2f);
-
-        Vector3 randomPos = new Vector3(
-           Random.Range(minXBounds, maxXbounds),
-           yPos,
-           Random.Range(minZBounds, maxZBounds));
-
-        var newPlayer = PhotonNetwork.Instantiate(playerPrefab.name, randomPos, Quaternion.identity);
+        SpawnPlayerAtRandomPos();
     }
 }

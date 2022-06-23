@@ -21,3 +21,10 @@ public class PlayerInfo
     }
 }
 
+public enum StatType : byte
+{
+    CrewAmount,
+    KillCount,
+    DeatCount
+}
+

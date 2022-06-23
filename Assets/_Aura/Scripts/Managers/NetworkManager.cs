@@ -3,16 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
+using TMPro;
 class NetworkManager : MonoBehaviourPunCallbacks
 {
     bool roomAvailable = false;
     [SerializeField] string sceneName;
+    [SerializeField] TMP_InputField playerNameInput;
 
+    public void HandleLogin()
+    {
+        PhotonNetwork.NickName = playerNameInput.text;
+        PhotonNetwork.ConnectUsingSettings();
+    }
     private void Awake()
     {
-        PhotonNetwork.AutomaticallySyncScene = true;
-
-        PhotonNetwork.ConnectUsingSettings();
+        PhotonNetwork.AutomaticallySyncScene = true;      
     }
     public override void OnConnectedToMaster()
     {  

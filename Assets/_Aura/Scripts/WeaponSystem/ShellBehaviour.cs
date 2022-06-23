@@ -17,7 +17,7 @@ public class ShellBehaviour : MonoBehaviourPun //shell data to be scriptable obj
         }
         if (collision.gameObject.CompareTag("Player"))
         {
-            collision.gameObject.GetComponent<PhotonView>().RPC("TakeDamage", RpcTarget.All, 10f);
+            collision.gameObject.GetPhotonView().RPC("TakeDamage", RpcTarget.All, 10f,PhotonNetwork.LocalPlayer.ActorNumber);
         }
     }
 

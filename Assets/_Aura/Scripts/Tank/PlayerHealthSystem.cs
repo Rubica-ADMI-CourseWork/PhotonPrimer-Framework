@@ -12,7 +12,7 @@ public class PlayerHealthSystem : MonoBehaviourPun
     [SerializeField] GameObject hitFX;
 
     [PunRPC]
-    public void TakeDamage(float damageAmnt)
+    public void TakeDamage(float damageAmnt, int actorNo)
     {
         var fx = PhotonNetwork.Instantiate(hitFX.name, transform.position, Quaternion.identity);
         Destroy(fx, .2f);
@@ -20,24 +20,19 @@ public class PlayerHealthSystem : MonoBehaviourPun
         maxhealth -= damageAmnt;
         if (maxhealth <= 0)
         {
-            if (!photonView.IsMine)
-            {
-               photonView.RPC("SpewCrew",RpcTarget.All);
-               photonView.RPC("Die",RpcTarget.All);
-            } 
+            Die(actorNo);
         }
     }
 
 
-    [PunRPC]
-    private void Die()
+
+    private void Die(int no)
     {
-        if(photonView.IsMine)
-        FindObjectOfType<SpawnManager>().RespawnPlayer();
+        AudioManager.Instance.PlayTankXplosionFX();
+        MatchManager.Instance.SendUpdateStatsEvent(PhotonNetwork.LocalPlayer.ActorNumber, StatType.DeatCount, 1);
+        SpawnManager.Instance.Die();
         var fx = PhotonNetwork.Instantiate(destructionFX.name, transform.position, Quaternion.identity);
         Destroy(gameObject);
         Destroy(fx, .3f);
-
-        
     }
 }

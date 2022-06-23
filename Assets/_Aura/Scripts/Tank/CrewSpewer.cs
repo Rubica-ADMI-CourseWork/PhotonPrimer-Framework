@@ -17,8 +17,11 @@ public class CrewSpewer : MonoBehaviourPun
     {
         for(int i = 0; i < crewAmount; i++)
         {
+            float randomX = Random.Range(0f, 10f);
+            float randomZ = Random.Range(0f, 10f);
+            var randomXplodeDirection = new Vector3(randomX,transform.position.y,randomZ);
             var crewObj = PhotonNetwork.Instantiate(crewPrefab.name,transform.position,Quaternion.identity);
-            crewObj.GetComponent<Rigidbody>().AddExplosionForce(xPlosionForce, transform.position, xPlosionRadius,xPlosionUpForce);
+            crewObj.GetComponent<Rigidbody>().AddForce(randomXplodeDirection *1f,ForceMode.Impulse);
         }
     }
 }

@@ -24,10 +24,11 @@ public class PlayerShoot : MonoBehaviourPun
   
     public void ShootShell()
     {
-        photonView.RPC("HandleShoot", RpcTarget.All);
+        AudioManager.Instance.PlayShellFiringFX();
+        HandleShoot();
     }
 
-    [PunRPC]
+    
     private void HandleShoot()
     {
         Debug.Log("Inside Shoot Shell");

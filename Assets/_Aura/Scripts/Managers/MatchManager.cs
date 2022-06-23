@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Photon.Pun;
 using Photon.Realtime;
 using ExitGames.Client.Photon;
+using System;
 
 public enum EventCodes : byte
 {
@@ -13,7 +15,16 @@ public enum EventCodes : byte
 }
 public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
 {
+    public GameObject leaderBoardPanel;
+    public GameObject leaderBoardItemPrefab;
+
+    public static MatchManager Instance { get; private set; }
+    private void Awake()
+    {
+        Instance = this;
+    }
     #region Member Fields
+    private List<GameObject> leaderBoardItemObjects = new List<GameObject>();
     [SerializeField] private List<PlayerInfo> playerInfoList = new List<PlayerInfo>();
     private int index;
     #endregion
@@ -23,9 +34,34 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
     {
         if (PhotonNetwork.IsConnected)
         {
-            SendAddNewPlayerEvent("Tony");
+            SendAddNewPlayerEvent(PhotonNetwork.NickName);
+        }
+        else if (!PhotonNetwork.IsConnected)
+        {
+            SceneManager.LoadScene(0);
         }
     }
+
+    private void UpdateLeaderBoard()
+    {
+        foreach (var obj in leaderBoardItemObjects)
+        {
+            Destroy(obj);
+        }
+
+        leaderBoardItemObjects.Clear();
+
+        //create a leaderboard item for each 
+        foreach (var info in playerInfoList)
+        {
+            var item = Instantiate(leaderBoardItemPrefab);
+            item.GetComponent<LeaderboardItem>().UpdateItem(info.playerName, info.crewAmount, info.killCount);
+            item.transform.SetParent(leaderBoardPanel.transform, false);
+
+            leaderBoardItemObjects.Add(item);
+        }
+    }
+
     private void OnEnable()
     {
         PhotonNetwork.AddCallbackTarget(this);
@@ -64,13 +100,48 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
     #endregion
 
     #region Event Management
-    public void SendUpdateStatsEvent()
+    public void SendUpdateStatsEvent(int sender, byte statToUpdate, int statAmount)
     {
+        object[] statsInfo = new object[] { sender, statToUpdate, statAmount };
 
+        PhotonNetwork.RaiseEvent(
+           (byte)EventCodes.UpdateStats,
+           statsInfo,
+           new RaiseEventOptions { Receivers = ReceiverGroup.All },
+           new SendOptions { Reliability = true });
     }
     public void ReceiveUpdateStatsEvent(object[] inComingData)
     {
+        //cache incoming values
+        int actor = (int)inComingData[0];
+        int statType = (int)inComingData[1];
+        int statAmount = (int)inComingData[2];
 
+        //loop through list updating the relevant player based on actor number
+        for (int i = 0; i < playerInfoList.Count; i++)
+        {
+            if (playerInfoList[i].actorNo == actor)
+            {
+                switch (statType)
+                {
+                    //crew amount
+                    case 0:
+                        playerInfoList[i].crewAmount+=statAmount;
+                        break;
+
+                    case 1://kill count
+                        playerInfoList[i].killCount += statAmount;
+                        break;
+
+                    case 2://death count
+                        playerInfoList[i].deathCount += statAmount;
+                        break;
+                }
+            break;
+            }
+        }
+
+        UpdateLeaderBoard();
     }
     public void SendListAllPlayersEvent()
     {
@@ -109,11 +180,12 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
             playerInfoList.Add(info);
 
-            if(PhotonNetwork.LocalPlayer.ActorNumber == info.actorNo)
+            if (PhotonNetwork.LocalPlayer.ActorNumber == info.actorNo)
             {
                 index = i;
             }
         }
+        UpdateLeaderBoard();
     }
     public void SendAddNewPlayerEvent(string playerName)
     {
