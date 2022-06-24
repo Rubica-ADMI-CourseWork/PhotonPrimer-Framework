@@ -17,14 +17,15 @@ public class ShellBehaviour : MonoBehaviourPun //shell data to be scriptable obj
         }
         if (collision.gameObject.CompareTag("Player"))
         {
-            collision.gameObject.GetPhotonView().RPC("TakeDamage", RpcTarget.All, 10f,PhotonNetwork.LocalPlayer.ActorNumber);
+            Debug.Log("from shell Behaviour " + GetComponent<ShellInfo>().playerNo);
+            collision.gameObject.GetPhotonView().RPC("TakeDamage", RpcTarget.All, 10f,GetComponent<ShellInfo>().playerNo,GetComponent<ShellInfo>().ShooterName);
         }
     }
 
     private void HandleShellDestruction()
     {
         var shellFX =PhotonNetwork.Instantiate(shellVFX.name,transform.position,Quaternion.identity);
-        Destroy(gameObject, timeToDestruction);
-        Destroy(shellFX,timeToVfxDestruction);
+        Destroy(gameObject);
+        Destroy(shellFX);
     }
 }

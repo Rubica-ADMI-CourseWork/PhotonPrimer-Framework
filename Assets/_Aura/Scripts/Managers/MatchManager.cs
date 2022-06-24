@@ -24,9 +24,11 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
         Instance = this;
     }
     #region Member Fields
+
     private List<GameObject> leaderBoardItemObjects = new List<GameObject>();
     [SerializeField] private List<PlayerInfo> playerInfoList = new List<PlayerInfo>();
     private int index;
+
     #endregion
 
     #region Unity Callbacks
@@ -44,6 +46,7 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
     private void UpdateLeaderBoard()
     {
+        Debug.Log("Inside update leader board!");
         foreach (var obj in leaderBoardItemObjects)
         {
             Destroy(obj);
@@ -59,14 +62,15 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
             item.transform.SetParent(leaderBoardPanel.transform, false);
 
             leaderBoardItemObjects.Add(item);
+           
         }
     }
 
-    private void OnEnable()
+    public override void OnEnable()
     {
         PhotonNetwork.AddCallbackTarget(this);
     }
-    private void OnDisable()
+    public override void OnDisable()
     {
         PhotonNetwork.RemoveCallbackTarget(this);
     }
@@ -102,6 +106,8 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
     #region Event Management
     public void SendUpdateStatsEvent(int sender, byte statToUpdate, int statAmount)
     {
+        //Debug.Log("sending stats of : " + sender + statToUpdate + statAmount);
+
         object[] statsInfo = new object[] { sender, statToUpdate, statAmount };
 
         PhotonNetwork.RaiseEvent(
@@ -114,8 +120,10 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
     {
         //cache incoming values
         int actor = (int)inComingData[0];
-        int statType = (int)inComingData[1];
+        int statType = (byte)inComingData[1];
         int statAmount = (int)inComingData[2];
+
+        Debug.Log("Receiving stats of : " + actor + statType + statAmount);
 
         //loop through list updating the relevant player based on actor number
         for (int i = 0; i < playerInfoList.Count; i++)
@@ -126,7 +134,7 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
                 {
                     //crew amount
                     case 0:
-                        playerInfoList[i].crewAmount+=statAmount;
+                        playerInfoList[i].crewAmount += statAmount;
                         break;
 
                     case 1://kill count
@@ -137,11 +145,16 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
                         playerInfoList[i].deathCount += statAmount;
                         break;
                 }
-            break;
+                if(i == index)
+                {
+                    UpdateLeaderBoard();
+                }
+                break;
             }
         }
 
-        UpdateLeaderBoard();
+        //SendListAllPlayersEvent();
+
     }
     public void SendListAllPlayersEvent()
     {
@@ -185,7 +198,8 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
                 index = i;
             }
         }
-        UpdateLeaderBoard();
+       
+       UpdateLeaderBoard();
     }
     public void SendAddNewPlayerEvent(string playerName)
     {
@@ -216,4 +230,8 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
     }
     #endregion
 
+    public override void OnMasterClientSwitched(Player newMasterClient)
+    {
+        Debug.Log("Switched MasterClients to " + newMasterClient.NickName);
+    }
 }

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5402254915952112314}
   - component: {fileID: 5925555918091611987}
   - component: {fileID: 1933269456463640441}
+  - component: {fileID: 7680375112580582998}
   m_Layer: 0
   m_Name: tankXplosionVFX
   m_TagString: Untagged
@@ -4911,3 +4912,15 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!114 &7680375112580582998
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5402254915952112315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0537efa0c642e5d4e921ca669445657b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

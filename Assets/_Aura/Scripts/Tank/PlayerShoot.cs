@@ -27,12 +27,13 @@ public class PlayerShoot : MonoBehaviourPun
         AudioManager.Instance.PlayShellFiringFX();
         HandleShoot();
     }
-
-    
+ 
     private void HandleShoot()
     {
-        Debug.Log("Inside Shoot Shell");
+        
         var shellObj = PhotonNetwork.Instantiate(shellPrefab.name, firePosition.position, firePosition.rotation);
+        shellObj.GetComponent<ShellInfo>().ShooterName = photonView.Owner.NickName;
+        shellObj.GetComponent<ShellInfo>().playerNo = photonView.Owner.ActorNumber;
         shellObj.GetComponent<Rigidbody>().velocity = firePosition.forward * projectileSpeed;
     }
     private void OnDestroy()

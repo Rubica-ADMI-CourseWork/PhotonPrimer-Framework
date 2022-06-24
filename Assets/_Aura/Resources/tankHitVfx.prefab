@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8788382523146258889}
   - component: {fileID: 7004782802832774176}
   - component: {fileID: 3015840810998172682}
+  - component: {fileID: 3731615216955773414}
   m_Layer: 0
   m_Name: tankHitVfx
   m_TagString: Untagged
@@ -118,7 +119,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 0.3
+      scalar: 0.1
       minScalar: 0.1
       maxCurve:
         serializedVersion: 2
@@ -287,7 +288,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 0.5
+      scalar: 0.2
       minScalar: 0.1
       maxCurve:
         serializedVersion: 2
@@ -4911,3 +4912,15 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!114 &3731615216955773414
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8788382523146258888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0537efa0c642e5d4e921ca669445657b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

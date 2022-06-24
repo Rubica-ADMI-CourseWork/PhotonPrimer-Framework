@@ -10,6 +10,7 @@ public class PlayerMovement : MonoBehaviourPun
 {
     [SerializeField] float turnSpeed;
     [SerializeField] float moveSpeed;
+
     CamController controller;
     JoystickController joystickController;
     [field:SerializeField]public Vector2 MovementInput { get;private set; }
