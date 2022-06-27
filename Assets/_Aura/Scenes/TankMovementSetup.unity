@@ -852,6 +852,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 534a55c28d23d4444818e07166630740, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  allPlayersList: []
+  leaderBoardParent: {fileID: 1661228439}
+  leaderBoardPrefab: {fileID: 7751484299450277584, guid: 2ea7c0ad362d2264cba46f80ae5210ef, type: 3}
 --- !u!4 &1086153031
 Transform:
   m_ObjectHideFlags: 0
@@ -1241,7 +1244,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.7808219, y: 1}
+    m_SensorSize: {x: 1.7787056, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -1320,7 +1323,6 @@ GameObject:
   - component: {fileID: 1661228441}
   - component: {fileID: 1661228440}
   - component: {fileID: 1661228442}
-  - component: {fileID: 1661228443}
   m_Layer: 0
   m_Name: leaderBoardPanel
   m_TagString: Untagged
@@ -1344,7 +1346,7 @@ RectTransform:
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 0.721}
+  m_AnchorMax: {x: 1, y: 0.79300004}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 1, y: 1}
@@ -1404,7 +1406,7 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 1
-  m_Spacing: -149.18
+  m_Spacing: 36.88
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0
@@ -1412,21 +1414,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &1661228443
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1661228438}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff742eed872a97a468634a975abb1b69, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerNameTxt: {fileID: 0}
-  crewAmountTxt: {fileID: 0}
-  killCountTxt: {fileID: 0}
 --- !u!1 &1736824139
 GameObject:
   m_ObjectHideFlags: 0
@@ -1462,10 +1449,10 @@ RectTransform:
   m_Father: {fileID: 802038414}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.711, y: 0.5}
-  m_AnchorMax: {x: 0.978125, y: 0.8426917}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.711, y: 0.35554546}
+  m_AnchorMax: {x: 0.97968745, y: 0.8426917}
+  m_AnchoredPosition: {x: -1.5, y: 0}
+  m_SizeDelta: {x: -3, y: 0.0000076293945}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1736824141
 MonoBehaviour:
@@ -1983,7 +1970,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 0, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2570809717129319393
 GameObject:
@@ -2154,15 +2141,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 0
-    m_Right: 0
+    m_Left: 36
+    m_Right: 42
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 0
   m_Spacing: 83.5
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
-  m_ChildControlWidth: 0
+  m_ChildControlWidth: 1
   m_ChildControlHeight: 0
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
@@ -2282,7 +2269,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 0, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2570809717360599079
 GameObject:
@@ -2320,7 +2307,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 0, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2570809717728878993
 GameObject:
@@ -2368,7 +2355,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Crew
+  m_text: Tank Level
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 96b3c7f8f8ed6bc49abc9d93132e1df3, type: 2}

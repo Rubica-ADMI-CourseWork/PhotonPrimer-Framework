@@ -37,8 +37,8 @@ public class PlayerHealthSystem : MonoBehaviourPun
                 if (maxhealth <= 0)
                 {
                     PlayKillFX();
-                    MatchManager.Instance.SendUpdateKillStatsEvent(collision.gameObject.GetComponent<ShellInfo>().playerNo, 1, 1);
-                    SpawnManager.Instance.Die();
+                   
+                    SpawnManager.Instance.Die(collision.gameObject.GetComponent<ShellInfo>().playerNo, 1, 1);
                 }
 
             }

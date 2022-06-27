@@ -17,6 +17,9 @@ public enum EventCodes : byte
 public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
 {
     [SerializeField]private List<PlayerInfo> allPlayersList = new List<PlayerInfo>();
+    [SerializeField] Transform leaderBoardParent;
+    [SerializeField] GameObject leaderBoardPrefab;
+    private List<GameObject> leaderBoardItems = new List<GameObject>();
 
     private int myIndex;
 
@@ -45,10 +48,6 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
         }
     }
 
-    private void Update()
-    {
-      
-    }
     public void OnEvent(EventData photonEvent)
     {
         if (photonEvent.Code < 200)
@@ -143,6 +142,7 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
                 myIndex = i;
             }
         }
+        UpdateLeaderBoard();
     }
 
     public void SendUpdateKillStatsEvent(int killerActor, int stat,int statAmount)
@@ -174,11 +174,39 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
                 {
                     case 1: //kill stats
                         allPlayersList[i].killCount += statAmount;
-                        DebugController.Instance.debugInfoText.text = "Updating stats for "+ allPlayersList[i].actorNo +" to "+ allPlayersList[i].killCount;
                         break;
                 }
+
+                UpdateLeaderBoard();
                 break;
             }
         }
+    }
+
+    public void UpdateLeaderBoard()
+    {
+        DebugController.Instance.debugInfoText.text = "Updating Leaderboard";
+        RefreshLeaderBoard();
+
+        foreach(var p in allPlayersList)
+        {
+            var item = Instantiate(leaderBoardPrefab);
+            item.transform.SetParent(leaderBoardParent, false);
+            item.GetComponent<LeaderboardItem>().UpdateItem(p.playerName, 0, p.killCount);
+
+            leaderBoardItems.Add(item);
+        }
+
+    }
+
+    private void RefreshLeaderBoard()
+    {
+        DebugController.Instance.debugInfoText.text = "Refreshing Leaderboard";
+
+        foreach (var item in leaderBoardItems)
+        {
+            Destroy(item);
+        }
+        leaderBoardItems.Clear();
     }
 }

@@ -37,15 +37,16 @@ public class SpawnManager : MonoBehaviourPun
             randomPos,
             Quaternion.identity);
     }
-    public void Die()
+    public void Die(int playerNo,int stat,int statAmound)
     {
-        StartCoroutine(HandleDeath());
-    }
-    private IEnumerator HandleDeath()
-    {
-        yield return new WaitForSeconds(.1f);
-
         PhotonNetwork.Destroy(newPlayer);
+        MatchManager.Instance.SendUpdateKillStatsEvent(playerNo, stat, statAmound);
+        StartCoroutine(HandleDeath(playerNo,stat,statAmound));
+    }
+    private IEnumerator HandleDeath(int playerNo,int stat,int statAmount)
+    {
+        
+        yield return new WaitForSeconds(.1f);
 
 
 

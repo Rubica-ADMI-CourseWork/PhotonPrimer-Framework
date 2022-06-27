@@ -118,7 +118,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c82852a4acbeee41af169c5d68efd4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeToDestruction: 0.1
+  timeToDestruction: 0
   timeToVfxDestruction: 1
   shellVFX: {fileID: 8788382523146258888, guid: b7c6ba6efd6c15b48852b7ca86c78563, type: 3}
 --- !u!114 &5354410762386016012
@@ -142,7 +142,6 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 5442757213602963354}
   - {fileID: 6672638980177747669}
-  - {fileID: 0}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
