@@ -11,11 +11,13 @@ public class BulletBehaviour : MonoBehaviourPun
         if (collision.gameObject.CompareTag("Ground"))
         {
             Debug.Log("Bullet landed.");
-            Destroy(gameObject, .2f);
+            PhotonNetwork.Destroy(gameObject);
         }
         if (collision.gameObject.CompareTag("Player"))
         {
-            collision.gameObject.GetComponent<PhotonView>().RPC("TakeDamage", RpcTarget.All, 10f);
+            
+            PhotonNetwork.Destroy(gameObject);
+
         }
     }
 }

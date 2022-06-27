@@ -11,21 +11,13 @@ public class ShellBehaviour : MonoBehaviourPun //shell data to be scriptable obj
     public GameObject shellVFX;
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            HandleShellDestruction();
-        }
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            Debug.Log("from shell Behaviour " + GetComponent<ShellInfo>().playerNo);
-            collision.gameObject.GetPhotonView().RPC("TakeDamage", RpcTarget.All, 10f,GetComponent<ShellInfo>().playerNo,GetComponent<ShellInfo>().ShooterName);
-        }
+        HandleShellDestruction();
     }
 
     private void HandleShellDestruction()
     {
-        var shellFX =PhotonNetwork.Instantiate(shellVFX.name,transform.position,Quaternion.identity);
-        Destroy(gameObject);
+        var shellFX = PhotonNetwork.Instantiate(shellVFX.name,transform.position,Quaternion.identity);
+        Destroy(gameObject,timeToDestruction);
         Destroy(shellFX);
     }
 }

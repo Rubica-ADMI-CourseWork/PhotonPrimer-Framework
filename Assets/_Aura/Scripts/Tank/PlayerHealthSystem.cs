@@ -11,30 +11,51 @@ public class PlayerHealthSystem : MonoBehaviourPun
     [SerializeField] GameObject destructionFX;
     [SerializeField] GameObject hitFX;
 
-    [PunRPC]
-    public void TakeDamage(float damageAmnt, int actorNo,string shooterName)
+    private void Start()
     {
-      HandleDamage(damageAmnt, actorNo,shooterName);
+        maxhealth = 50;
     }
 
-    public void HandleDamage(float damageAmnt, int actorNo,string shooter)
+    public void TakeDamage(float damageAmnt, int actorNo, string shooterName)
     {
-        if (photonView.IsMine)
+
+        HandleDamage(damageAmnt, actorNo, shooterName);
+    }
+
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        //check if it is shell
+        if (collision.gameObject.CompareTag("Shell"))
         {
-            var fx = PhotonNetwork.Instantiate(hitFX.name, transform.position, Quaternion.identity);    
-            maxhealth -= damageAmnt;
-            if (maxhealth <= 0)
+
+            if (photonView.IsMine)
             {
-                PlayKillFX();
-                MatchManager.Instance.SendUpdateStatsEvent(actorNo, (byte)StatType.KillCount, 1);
-                SpawnManager.Instance.Die();
+
+                var fx = PhotonNetwork.Instantiate(hitFX.name, transform.position, Quaternion.identity);
+                maxhealth -= 10;
+                if (maxhealth <= 0)
+                {
+                    PlayKillFX();
+                    MatchManager.Instance.SendUpdateKillStatsEvent(collision.gameObject.GetComponent<ShellInfo>().playerNo, 1, 1);
+                    SpawnManager.Instance.Die();
+                }
+
             }
         }
     }
 
+
+    public void HandleDamage(float damageAmnt, int actorNo, string shooter)
+    {
+
+
+
+    }
+
     private void PlayKillFX()
     {
-        AudioManager.Instance.PlayTankXplosionFX();     
-        var fx = PhotonNetwork.Instantiate(destructionFX.name, transform.position, Quaternion.identity);    
+        AudioManager.Instance.PlayTankXplosionFX();
+        var fx = PhotonNetwork.Instantiate(destructionFX.name, transform.position, Quaternion.identity);
     }
 }

@@ -11,6 +11,7 @@ public class SpawnManager : MonoBehaviourPun
     [SerializeField] float minXBounds, maxXbounds, minZBounds, maxZBounds, yPos;
 
 
+    //store the player brought in.
     private GameObject newPlayer;
 
     public static SpawnManager Instance;
@@ -40,20 +41,12 @@ public class SpawnManager : MonoBehaviourPun
     {
         StartCoroutine(HandleDeath());
     }
-    public void RespawnPlayer()
-    {
-        StartCoroutine(HandleRespawnWithDelay());
-    }
-    private IEnumerator HandleRespawnWithDelay()
-    {
-        yield return new WaitForSeconds(2f);
-        SpawnPlayerAtRandomPos();
-    }
-
     private IEnumerator HandleDeath()
     {
-        PhotonNetwork.Destroy(newPlayer);
         yield return new WaitForSeconds(.1f);
+
+        PhotonNetwork.Destroy(newPlayer);
+
 
 
         SpawnPlayerAtRandomPos();

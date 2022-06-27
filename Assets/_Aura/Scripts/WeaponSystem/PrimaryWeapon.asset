@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5dabb37f2a6529740ad27e428ffb00dd, type: 3}
+  m_Name: PrimaryWeapon
+  m_EditorClassIdentifier: 
+  shell: {fileID: 7429047605962690306, guid: ff9cc517b7a5ce442b4b4c8b6350a447, type: 3}
+  shellCount: 10

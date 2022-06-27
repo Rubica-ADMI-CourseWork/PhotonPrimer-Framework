@@ -6,9 +6,9 @@ using Photon.Pun;
 public class PlayerShoot : MonoBehaviourPun
 {
     [SerializeField] float projectileSpeed;
-    [SerializeField] GameObject shellPrefab;
+    [SerializeField] WeaponSO weaponData;
     [SerializeField] Transform firePosition;
-
+  
     ShootController shootController;
 
     private void OnEnable()
@@ -17,24 +17,23 @@ public class PlayerShoot : MonoBehaviourPun
     }
     private void Start()
     {
-        if(shootController == null){ Debug.Log("no shoot controller."); }
+    
+        if (shootController == null){ Debug.Log("no shoot controller."); }
         shootController.OnFire += ShootShell;
     }
 
   
     public void ShootShell()
     {
-        AudioManager.Instance.PlayShellFiringFX();
-        HandleShoot();
+       AudioManager.Instance.PlayShellFiringFX();
+       HandleShoot();
     }
- 
+
+
     private void HandleShoot()
     {
-        
-        var shellObj = PhotonNetwork.Instantiate(shellPrefab.name, firePosition.position, firePosition.rotation);
-        shellObj.GetComponent<ShellInfo>().ShooterName = photonView.Owner.NickName;
-        shellObj.GetComponent<ShellInfo>().playerNo = photonView.Owner.ActorNumber;
-        shellObj.GetComponent<Rigidbody>().velocity = firePosition.forward * projectileSpeed;
+        var shell = PhotonNetwork.Instantiate(weaponData.shell.name, firePosition.position, firePosition.rotation);
+        shell.GetComponent<Rigidbody>().velocity = transform.forward * projectileSpeed;
     }
     private void OnDestroy()
     {
