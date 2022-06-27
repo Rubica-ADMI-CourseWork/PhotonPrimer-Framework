@@ -16,11 +16,6 @@ public class PlayerHealthSystem : MonoBehaviourPun
         maxhealth = 50;
     }
 
-    public void TakeDamage(float damageAmnt, int actorNo, string shooterName)
-    {
-
-        HandleDamage(damageAmnt, actorNo, shooterName);
-    }
 
 
     private void OnCollisionEnter(Collision collision)
@@ -31,28 +26,25 @@ public class PlayerHealthSystem : MonoBehaviourPun
 
             if (photonView.IsMine)
             {
-
-                var fx = PhotonNetwork.Instantiate(hitFX.name, transform.position, Quaternion.identity);
-                maxhealth -= 10;
-                if (maxhealth <= 0)
-                {
-                    PlayKillFX();
-                   
-                    SpawnManager.Instance.Die(collision.gameObject.GetComponent<ShellInfo>().playerNo, 1, 1);
-                }
-
+               TakeDamage(collision.gameObject.GetComponent<ShellInfo>().playerNo, 1, 1);
+               
             }
         }
     }
 
 
-    public void HandleDamage(float damageAmnt, int actorNo, string shooter)
+
+    public void TakeDamage( int actorNo, int stat,int statAmout)
     {
-
-
+        var fx = PhotonNetwork.Instantiate(hitFX.name, transform.position, Quaternion.identity);
+        maxhealth -= 10;
+        if (maxhealth <= 0)
+        {
+            PlayKillFX();
+            SpawnManager.Instance.Die(actorNo,stat,statAmout);
+        }
 
     }
-
     private void PlayKillFX()
     {
         AudioManager.Instance.PlayTankXplosionFX();

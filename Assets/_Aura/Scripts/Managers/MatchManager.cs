@@ -188,7 +188,9 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
         DebugController.Instance.debugInfoText.text = "Updating Leaderboard";
         RefreshLeaderBoard();
 
-        foreach(var p in allPlayersList)
+        var sortedPlayers = SortPlayers(allPlayersList);
+
+        foreach(var p in sortedPlayers)
         {
             var item = Instantiate(leaderBoardPrefab);
             item.transform.SetParent(leaderBoardParent, false);
@@ -208,5 +210,33 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
             Destroy(item);
         }
         leaderBoardItems.Clear();
+    }
+
+    private List<PlayerInfo> SortPlayers(List<PlayerInfo> players)
+    {
+        List<PlayerInfo> result = new List<PlayerInfo>();
+
+        while(result.Count < players.Count)
+        {
+            //go through all and see who has highest value
+            int highestVal = -1;
+            PlayerInfo selection = players[0];
+
+            foreach (var item in players)
+            {
+                if (!result.Contains(item))
+                {
+                    if (item.killCount > highestVal)
+                    {
+                        selection = item;
+                        highestVal = item.killCount;
+                    }
+                }
+               
+            }
+            result.Add(selection);
+        }
+
+        return result;
     }
 }
